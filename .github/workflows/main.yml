@@ -27,5 +27,5 @@ jobs:
       - uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
-          draft: true
+          draft: false
           files: Il2CppInteropGcFix/bin/Release/net6.0/Il2CppInteropGcFix.dll
