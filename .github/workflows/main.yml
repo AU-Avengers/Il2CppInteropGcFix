@@ -1,0 +1,31 @@
+name: CI
+
+on: ["workflow_dispatch", "push", "pull_request"]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build
+        run: dotnet build Il2CppInteropGcFix/Il2CppInteropGcFix.csproj --configuration Release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Il2CppInteropGcFix.dll
+          path: Il2CppInteropGcFix/bin/Release/net6.0/Il2CppInteropGcFix.dll
+          retention-days: 7
+
+      - uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          draft: true
+          files: Il2CppInteropGcFix/bin/Release/net6.0/Il2CppInteropGcFix.dll
