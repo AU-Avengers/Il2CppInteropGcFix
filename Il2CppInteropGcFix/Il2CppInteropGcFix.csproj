@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <DebugType>embedded</DebugType>
+
+        <Version>1.0.0</Version>
+        <Description>A BepInEx preloader patcher that fixes Il2CppInterop bugs that make Unity’s garbage collector free objects mods still use, which causes random crashes or undefined behaviour.</Description>
+        <Authors>Pietro</Authors>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="libs\*.dll">
+            <HintPath>libs\%(FileName)%(Extension)</HintPath>
+            <Private>false</Private>
+        </Reference>
+    </ItemGroup>
+
+    <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AmongUs)/BepInEx/patchers/" UseSymboliclinksIfPossible="true" />
+    </Target>
+</Project>
